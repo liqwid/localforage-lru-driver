@@ -1,0 +1,64 @@
+{
+  "name": "localforage-lru-driver",
+  "version": "1.0.0",
+  "description": "plugin for localforage to work with indexes in indexedDb",
+  "homepage": "https://github.com/liqwid/localforage-lru-driver",
+  "main": "dist/localforage-lru-driver.js",
+  "jsnext:main": "dist/localforage-lru-driver.es6.js",
+  "scripts": {
+    "prebuild": "eslint lib",
+    "build": "rollup -c rollup.config.umd.js && rollup -c rollup.config.es6.js",
+    "pretest": "rollup -c rollup.config.test.js",
+    "test": "karma start karma.config.js",
+    "test_dev": "watch 'rollup -c rollup.config.test.js' test/ lib/",
+    "prepublish": "npm run build && npm run pretest && karma start karma.config.js --single-run",
+    "dev": "watch 'npm run build' lib/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/liqwid/localforage-lru-driver.git"
+  },
+  "keywords": [
+    "indexes",
+    "indexedDb",
+    "localforage",
+    "plugin"
+  ],
+  "author": "Popov Anton",
+  "licence": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/liqwid/localforage-lru-driver/issues"
+  },
+  "devDependencies": {
+    "babel-eslint": "^6.0.4",
+    "babel-preset-es2015-rollup": "^1.1.1",
+    "chai": "^3.5.0",
+    "eslint": "^2.8.0",
+    "karma": "^1.4.1",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-firefox-launcher": "^1.0.0",
+    "karma-ie-launcher": "^1.0.0",
+    "karma-mocha": "^1.3.0",
+    "karma-opera-launcher": "^1.0.0",
+    "karma-safari-launcher": "^1.0.0",
+    "karma-sinon": "^1.0.5",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-verbose-reporter": "0.0.5",
+    "mocha": "^2.4.5",
+    "requirejs": "^2.2.0",
+    "rollup": "^0.26.1",
+    "rollup-plugin-babel": "^2.4.0",
+    "rollup-plugin-commonjs": "^7.0.0",
+    "rollup-plugin-multi-entry": "^1.2.0",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "sinon": "^1.17.7",
+    "source-map-support": "^0.4.0",
+    "watch": "^1.0.1"
+  },
+  "dependencies": {
+    "localforage": ">=1.4.0",
+    "localforage-indexes": "^1.0.2",
+    "localforage-removeitems": "^1.1.0"
+  }
+}
