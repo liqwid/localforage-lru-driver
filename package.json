@@ -1,6 +1,6 @@
 {
   "name": "localforage-lru-driver",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "plugin for localforage to work with indexes in indexedDb",
   "homepage": "https://github.com/liqwid/localforage-lru-driver",
   "main": "dist/localforage-lru-driver.js",
@@ -19,10 +19,11 @@
     "url": "git://github.com/liqwid/localforage-lru-driver.git"
   },
   "keywords": [
-    "indexes",
+    "lru",
+    "cache",
     "indexedDb",
     "localforage",
-    "plugin"
+    "driver"
   ],
   "author": "Popov Anton",
   "licence": "Apache-2.0",
