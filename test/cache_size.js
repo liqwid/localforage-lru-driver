@@ -35,6 +35,7 @@ export default function(localforage, utils) {
         assert(length <= cacheSize, 'store size excedes cache size');
         done();
       })
+      .catch(done);
     });
 
     it('removes least recently accessed item', (done) => {
@@ -44,7 +45,8 @@ export default function(localforage, utils) {
       .then(value => {
         assert.ok(value, 'least recently accessed value was removed');
         done();
-      }, done);
+      })
+      .catch(done);
     });
   });
 }
