@@ -1,5 +1,5 @@
 export default function(localforage, utils) {
-  var testLF,
+  var testLF, iDB,
       lruIndex  = 'TEST_LRU_INDEX',
       cacheSize = 100,
       lruKey    = 'TEST_LRU_KEY',
@@ -14,8 +14,13 @@ export default function(localforage, utils) {
       lruIndex  : lruIndex,
       cacheSize : cacheSize,
       lruKey    : lruKey
-    })
-    testLF.ready().then(() => done(), done)
+    });
+
+    iDB = localforage.createInstance({
+      driver    : 'asyncStorage',
+    });
+
+    testLF.ready().then(() => iDB.ready()).then(() => done(), done);
   });
 
   describe('lruStorage initStore tests', () => {
@@ -47,8 +52,9 @@ export default function(localforage, utils) {
           assert(index.keyPath === lruKey, 'incorrect keypath created');
 
           done()
-        }, done)
-      )
+        })
+        .catch(done)
+      ).catch(done);
     });
 
     it('setItem callback works', (done) => {
@@ -57,6 +63,7 @@ export default function(localforage, utils) {
         assert(value === testValue, 'set value was incorrect');
         done();
       })
+      .catch(done);
     });
 
     it('setItem chains with then', (done) => {
@@ -66,7 +73,17 @@ export default function(localforage, utils) {
       });
     });
 
-    // it('setItem updates value with lruKey')
+    it('setItem updates value with lruKey', (done) => {
+      var beforeTest = Date.now();
+      testLF.setItem(testKey, testValue)
+      .then(() => iDB.getItem.call(testLF, testKey))
+      .then((value) => {
+        assert(value.hasOwnProperty(lruKey), 'access time is not added to the entry');
+        assert(value[lruKey] >= beforeTest, 'entry last access time is earlier than the test\'s start time');
+        done();
+      })
+      .catch(done);
+    });
   });
 
   describe('lruStorage getItem tests', () => {
@@ -84,15 +101,45 @@ export default function(localforage, utils) {
         assert(value === testValue, 'set value was incorrect');
         done();
       })
+      .catch(done);
     });
 
     it('getItem chains with then', (done) => {
       testLF.getItem(testKey).then((value) => {
         assert(value === testValue, 'set value was incorrect');
         done();
-      });
+      })
+      .catch(done);
     });
 
-    // it('getItem updates value with lruKey')
+    it('getItem asking for non-existing item returns null', (done) => {
+      testLF.getItem('DOES_NOT_EXIST').then((value) => {
+        assert(value === null, 'value of non-existing item is not null');
+        done();
+      })
+      .catch(done);
+    });
+
+    it('getItem asking for non-existing item does not create an entry', (done) => {
+      testLF.getItem('DOES_NOT_EXIST')
+      .then(() => iDB.getItem.call(testLF, 'DOES_NOT_EXIST'))
+      .then((value) => {
+        assert(value === null, 'getItem created entry while asking for non-existing item');
+        done();
+      })
+      .catch(done);
+    });
+
+    it('getItem updates value with lruKey', (done) => {
+      var beforeTest = Date.now();
+      testLF.getItem(testKey)
+      .then(() => iDB.getItem.call(testLF, testKey))
+      .then((value) => {
+        assert(value.hasOwnProperty(lruKey), 'access time is not added to the entry');
+        assert(value[lruKey] >= beforeTest, 'entry last access time is earlier than the test\'s start time');
+        done();
+      })
+      .catch(done);
+    });
   });
 }
