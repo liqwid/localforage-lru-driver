@@ -37,7 +37,7 @@ export default function(localforage, utils) {
 
   describe('lruStorage setItem tests', () => {
     before((done) => {
-      testLF.deleteIndex(lruIndex).then(() => done(), done);
+      testLF.deleteIndex(lruIndex).then(() => done(), () => done());
     });
 
     afterEach((done) => {
@@ -51,7 +51,7 @@ export default function(localforage, utils) {
           assert.ok(index, 'index not created');
           assert(index.keyPath === lruKey, 'incorrect keypath created');
 
-          done()
+          done();
         })
         .catch(done)
       ).catch(done);
@@ -62,15 +62,14 @@ export default function(localforage, utils) {
         assert(err === null, 'callback resolved with error');
         assert(value === testValue, 'set value was incorrect');
         done();
-      })
-      .catch(done);
+      }).catch(done);
     });
 
     it('setItem chains with then', (done) => {
       testLF.setItem(testKey, testValue).then((value) => {
         assert(value === testValue, 'set value was incorrect');
         done();
-      });
+      }).catch(done);
     });
 
     it('setItem updates value with lruKey', (done) => {
@@ -81,8 +80,7 @@ export default function(localforage, utils) {
         assert(value.hasOwnProperty(lruKey), 'access time is not added to the entry');
         assert(value[lruKey] >= beforeTest, 'entry last access time is earlier than the test\'s start time');
         done();
-      })
-      .catch(done);
+      }).catch(done);
     });
   });
 
@@ -100,24 +98,21 @@ export default function(localforage, utils) {
         assert(err === null, 'callback resolved with error');
         assert(value === testValue, 'set value was incorrect');
         done();
-      })
-      .catch(done);
+      }).catch(done);
     });
 
     it('getItem chains with then', (done) => {
       testLF.getItem(testKey).then((value) => {
         assert(value === testValue, 'set value was incorrect');
         done();
-      })
-      .catch(done);
+      }).catch(done);
     });
 
     it('getItem asking for non-existing item returns null', (done) => {
       testLF.getItem('DOES_NOT_EXIST').then((value) => {
         assert(value === null, 'value of non-existing item is not null');
         done();
-      })
-      .catch(done);
+      }).catch(done);
     });
 
     it('getItem asking for non-existing item does not create an entry', (done) => {
@@ -126,8 +121,7 @@ export default function(localforage, utils) {
       .then((value) => {
         assert(value === null, 'getItem created entry while asking for non-existing item');
         done();
-      })
-      .catch(done);
+      }).catch(done);
     });
 
     it('getItem updates value with lruKey', (done) => {
@@ -138,8 +132,7 @@ export default function(localforage, utils) {
         assert(value.hasOwnProperty(lruKey), 'access time is not added to the entry');
         assert(value[lruKey] >= beforeTest, 'entry last access time is earlier than the test\'s start time');
         done();
-      })
-      .catch(done);
+      }).catch(done);
     });
   });
 }
