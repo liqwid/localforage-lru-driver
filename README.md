@@ -10,8 +10,6 @@ Localforage driver that maintains cache size depending on least-recently-used(lr
 * [localforage-removeitems](https://github.com/localForage/localForage-removeItems) v1.4.0+
 * [localforage-indexes](https://github.com/liqwid/localforage-indexes) v1.0.2+
 
-## WARNING: DOES NOT SUPPORT FIREFOX/SAFARI YET
-
 ## Installation
 `npm i localforage-lru-driver`
 
