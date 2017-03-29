@@ -1,6 +1,6 @@
 {
   "name": "localforage-lru-driver",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "plugin for localforage to work with indexes in indexedDb",
   "homepage": "https://github.com/liqwid/localforage-lru-driver",
   "main": "dist/localforage-lru-driver.js",
